@@ -2,10 +2,10 @@ const http = require('http');
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  user: 'postgres',      
+  user: 'postgres',
   host: 'localhost',
-  database: 'solicitud_pedido',   
-  password: 'root', 
+  database: 'solicitud_pedido',
+  password: 'root',
   port: 5432,
 });
 
@@ -25,10 +25,10 @@ const getRequestBody = (req) => {
 };
 
 const server = http.createServer(async (req, res) => {
-res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
@@ -91,7 +91,19 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting administrador' }));
       }
-    } else {
+    }else if (urlParts[1] === 'administrador' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblAdministrador');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching administradores:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching administradores' }));
+      }
+    }
+     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
@@ -151,11 +163,24 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting jefe de tienda' }));
       }
-    } else {
+    } else if (urlParts[1] === 'jefetienda' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblJefeTienda');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching jefes de tienda:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching jefes de tienda' }));
+      }
+    }
+     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
   }
+
   else if (urlParts[1] === 'sede') {
     if (method === 'POST' && urlParts.length === 2) {
       try {
@@ -210,11 +235,24 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting sede' }));
       }
-    } else {
+    }else if (urlParts[1] === 'sede' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblSede');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching sedes:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching sedes' }));
+      }
+    }
+    
+     else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
   }
+
   else if (urlParts[1] === 'proveedor') {
     if (method === 'POST' && urlParts.length === 2) {
       try {
@@ -269,7 +307,18 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting proveedor' }));
       }
-    } else {
+    } else if (urlParts[1] === 'proveedor' && req.method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblproveedor');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching proveedores:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching proveedores' }));
+      }
+    } 
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
@@ -329,11 +378,23 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting pedido' }));
       }
-    } else {
+    } else if (urlParts[1] === 'pedido' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblPedido');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching pedidos:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching pedidos' }));
+      }
+    }    
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
   }
+
   else if (urlParts[1] === 'detalle') {
     if (method === 'POST' && urlParts.length === 2) {
       try {
@@ -388,7 +449,18 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting detalle' }));
       }
-    } else {
+    } else if (urlParts[1] === 'detalle' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblDetalle');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching detalles:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching detalles' }));
+      }
+    }     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
@@ -430,7 +502,19 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting recibe' }));
       }
-    } else {
+    } else if (urlParts[1] === 'recibe' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblRecibe');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching recibe:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching recibe' }));
+      }
+    }    
+     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
@@ -490,7 +574,18 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting telefono' }));
       }
-    } else {
+    } else if (urlParts[1] === 'telefono' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblTelefono');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching telefonos:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching telefonos' }));
+      }
+    }     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
@@ -551,7 +646,18 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting direccion' }));
       }
-    } else {
+    } else if (urlParts[1] === 'direccion' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblDireccion');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching direcciones:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching direcciones' }));
+      }
+    }     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }
@@ -611,7 +717,18 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting proveedor detalle' }));
       }
-    } else {
+    } else if (urlParts[1] === 'proveedordetalle' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblProveedorDetalle');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching detalles de proveedores:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching detalles de proveedores' }));
+      }
+    }     
+    else {
       // Not Found
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
@@ -674,8 +791,18 @@ res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Error deleting sede detalle' }));
       }
-    } else {
-
+    } if (urlParts[1] === 'sededetalle' && method === 'GET') {
+      try {
+        const result = await pool.query('SELECT * FROM tblSedeDetalle');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result.rows));
+      } catch (err) {
+        console.error('Error fetching detalles de sedes:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Error fetching detalles de sedes' }));
+      }
+    }     
+    else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Not Found' }));
     }

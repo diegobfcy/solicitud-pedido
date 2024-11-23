@@ -142,3 +142,60 @@ export const updateSedeDetalle = (razonSocial, departamento, data) => {
 export const deleteSedeDetalle = (razonSocial, departamento) => {
   return axios.delete(`${API_BASE_URL}/sededetalle/${encodeURIComponent(razonSocial)}/${encodeURIComponent(departamento)}`);
 };
+
+// Obtener todos los administradores
+export const fetchAdministradores = () => {
+  return axios.get(`${API_BASE_URL}/administrador`);
+};
+
+// Obtener todos los jefes de tienda
+export const fetchJefesTienda = () => {
+  return axios.get(`${API_BASE_URL}/jefetienda`);
+};
+
+// Obtener todas las sedes
+export const fetchSedes = () => {
+  return axios.get(`${API_BASE_URL}/sede`);
+};
+
+// Obtener todos los proveedores
+export const fetchProveedores = () => {
+  return axios.get(`${API_BASE_URL}/proveedor`);
+};
+
+// Obtener todos los pedidos
+export const fetchPedidos = () => {
+  return axios.get(`${API_BASE_URL}/pedido`);
+};
+
+// Obtener todos los detalles
+export const fetchDetalles = () => {
+  return axios.get(`${API_BASE_URL}/detalle`);
+};
+
+// Obtener todos los recibe
+export const fetchRecibe = () => {
+  return axios.get(`${API_BASE_URL}/recibe`);
+};
+
+// Obtener todos los teléfonos
+export const fetchTelefonos = () => {
+  return axios.get(`${API_BASE_URL}/telefono`);
+};
+
+// Obtener todas las direcciones
+export const fetchDirecciones = () => {
+  return axios.get(`${API_BASE_URL}/direccion`);
+};
+
+// Obtener todos los detalles de proveedores
+export const fetchProveedorDetalles = () => {
+  return axios.get(`${API_BASE_URL}/proveedordetalle`);
+};
+
+// Obtener todos los detalles de sedes
+export const fetchSedeDetalles = () => {
+  return axios.get(`${API_BASE_URL}/sededetalle`);
+};
+
+
