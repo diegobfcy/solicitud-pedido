@@ -1,92 +1,173 @@
 import React, { useState, useEffect } from 'react';
-import { fetchRecibe, insertRecibe, deleteRecibe } from '../apiService';
+import { fetchDetalles, insertDetalle, updateDetalle, deleteDetalle } from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
-function RecibeForm() {
-  const [recibeData, setRecibeData] = useState({
-    rucproveedor: '',
+function DetalleForm() {
+  const [detalleData, setDetalleData] = useState({
+    marca: '',
+    tipo: '',
+    cantidad: '',
     codigopedido: '',
+    id: '',
   });
 
   const navigate = useNavigate();
+  const [detalles, setDetalles] = useState([]);
 
-  const [recibeList, setRecibeList] = useState([]);
-
-  const loadRecibe = async () => {
+  const loadDetalles = async () => {
     try {
-      const response = await fetchRecibe();
-      setRecibeList(response.data);
+      const response = await fetchDetalles();
+      setDetalles(response.data);
     } catch (error) {
-      console.error('Error fetching recibe:', error);
+      console.error('Error fetching detalles:', error);
     }
   };
 
   useEffect(() => {
-    loadRecibe();
+    loadDetalles();
   }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setRecibeData((prev) => ({ ...prev, [name]: value }));
+    setDetalleData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleInsert = async () => {
     try {
-      const { rucproveedor, codigopedido } = recibeData;
-      await insertRecibe({ rucproveedor, codigopedido });
-      alert('Recibe insertado');
-      loadRecibe();
+      const { marca, tipo, cantidad, codigopedido } = detalleData;
+      await insertDetalle({ marca, tipo, cantidad, codigopedido });
+      alert('Detalle insertado');
+      loadDetalles();
+      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
     } catch (error) {
-      alert('Error al insertar Recibe');
+      alert('Error al insertar detalle');
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const { id, marca, tipo, cantidad, codigopedido } = detalleData;
+      await updateDetalle(id, { marca, tipo, cantidad, codigopedido });
+      alert('Detalle actualizado');
+      loadDetalles();
+      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
+    } catch (error) {
+      alert('Error al actualizar detalle');
     }
   };
 
   const handleDelete = async () => {
     try {
-      const { rucproveedor, codigopedido } = recibeData;
-      await deleteRecibe(rucproveedor, codigopedido);
-      alert('Recibe eliminado');
-      loadRecibe();
+      const { id } = detalleData;
+      await deleteDetalle(id);
+      alert('Detalle eliminado');
+      loadDetalles();
+      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
     } catch (error) {
-      alert('Error al eliminar Recibe');
+      alert('Error al eliminar detalle');
     }
   };
 
   return (
     <div className="form-and-table-container">
       <div className="form-container">
-        <h2>Gestión de Registros en Recibe</h2>
-        <button className="back-button" onClick={() => navigate('/')}>
+        <h2>Gestión de Detalles</h2>
+        <button
+          className="back-button"
+          onClick={() => navigate('/')}
+        >
           Regresar al Menú
         </button>
 
-        <div className="card mb-4">
-          <div className="card-header">Recibe</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>RUC Proveedor</label>
-              <input
-                type="text"
-                className="form-control"
-                name="rucproveedor"
-                value={recibeData.rucproveedor}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Código Pedido</label>
-              <input
-                type="number"
-                className="form-control"
-                name="codigopedido"
-                value={recibeData.codigopedido}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="button-group">
+        {/* Contenedor principal del formulario */}
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          {/* Formulario para insertar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Detalle</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Marca</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="marca"
+                  value={detalleData.marca}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Tipo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="tipo"
+                  value={detalleData.tipo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Cantidad</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="cantidad"
+                  value={detalleData.cantidad}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Código Pedido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigopedido"
+                  value={detalleData.codigopedido}
+                  onChange={handleInputChange}
+                />
+              </div>
               <button className="btn btn-primary mt-2" onClick={handleInsert}>
                 Insertar
+              </button>
+            </div>
+          </div>
+
+          {/* Formulario para actualizar/eliminar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Detalle</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>ID Detalle</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="id"
+                  value={detalleData.id}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Marca</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="marca"
+                  value={detalleData.marca}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Tipo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="tipo"
+                  value={detalleData.tipo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
+                Actualizar
               </button>
               <button className="btn btn-danger mt-2" onClick={handleDelete}>
                 Eliminar
@@ -97,19 +178,25 @@ function RecibeForm() {
       </div>
 
       <div className="table-container">
-        <h2>Lista de Registros en Recibe</h2>
+        <h2>Lista de Detalles</h2>
         <table>
           <thead>
             <tr>
-              <th>RUC del Proveedor</th>
-              <th>Código del Pedido</th>
+              <th>ID</th>
+              <th>Marca</th>
+              <th>Tipo</th>
+              <th>Cantidad</th>
+              <th>Código Pedido</th>
             </tr>
           </thead>
           <tbody>
-            {recibeList.map((recibe) => (
-              <tr key={`${recibe.rucproveedor}-${recibe.codigopedido}`}>
-                <td>{recibe.rucproveedor}</td>
-                <td>{recibe.codigopedido}</td>
+            {detalles.map((detalle) => (
+              <tr key={detalle.id}>
+                <td>{detalle.id}</td>
+                <td>{detalle.marca}</td>
+                <td>{detalle.tipo}</td>
+                <td>{detalle.cantidad}</td>
+                <td>{detalle.codigopedido}</td>
               </tr>
             ))}
           </tbody>
@@ -119,4 +206,4 @@ function RecibeForm() {
   );
 }
 
-export default RecibeForm;
+export default DetalleForm;

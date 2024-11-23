@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import {
-  fetchAdministradores,
-  insertAdministrador,
-  updateAdministrador,
-  deleteAdministrador,
-} from '../apiService';
+import { fetchAdministradores, insertAdministrador, updateAdministrador, deleteAdministrador } from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
 function AdministradorForm() {
   const [adminData, setAdminData] = useState({
+    id: '',
     nombre: '',
     telefono: '',
     correo: '',
-    id: '',
   });
 
   const navigate = useNavigate();
-
   const [administradores, setAdministradores] = useState([]);
 
   const loadAdministradores = async () => {
@@ -38,34 +32,37 @@ function AdministradorForm() {
     setAdminData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAdminInsert = async () => {
+  const handleInsert = async () => {
     try {
       const { nombre, telefono, correo } = adminData;
       await insertAdministrador({ nombre, telefono, correo });
       alert('Administrador insertado');
       loadAdministradores();
+      setAdminData({ id: '', nombre: '', telefono: '', correo: '' });
     } catch (error) {
       alert('Error al insertar Administrador');
     }
   };
 
-  const handleAdminUpdate = async () => {
+  const handleUpdate = async () => {
     try {
       const { id, nombre, telefono, correo } = adminData;
       await updateAdministrador(id, { nombre, telefono, correo });
       alert('Administrador actualizado');
       loadAdministradores();
+      setAdminData({ id: '', nombre: '', telefono: '', correo: '' });
     } catch (error) {
       alert('Error al actualizar Administrador');
     }
   };
 
-  const handleAdminDelete = async () => {
+  const handleDelete = async () => {
     try {
       const { id } = adminData;
       await deleteAdministrador(id);
       alert('Administrador eliminado');
       loadAdministradores();
+      setAdminData({ id: '', nombre: '', telefono: '', correo: '' });
     } catch (error) {
       alert('Error al eliminar Administrador');
     }
@@ -79,71 +76,63 @@ function AdministradorForm() {
           Regresar al Menú
         </button>
 
-        {/* Formulario para insertar administrador */}
-        <div className="card mb-4">
-          <div className="card-header">Administrador</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                name="nombre"
-                value={adminData.nombre}
-                onChange={(e) => handleInputChange(e)}
-              />
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Administrador</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={adminData.nombre}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={adminData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Correo</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="correo"
+                  value={adminData.correo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-primary mt-2" onClick={handleInsert}>
+                Insertar
+              </button>
             </div>
-            <div className="form-group">
-              <label>Teléfono</label>
-              <input
-                type="text"
-                className="form-control"
-                name="telefono"
-                value={adminData.telefono}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Correo</label>
-              <input
-                type="email"
-                className="form-control"
-                name="correo"
-                value={adminData.correo}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <button className="btn btn-primary mt-2" onClick={handleAdminInsert}>
-              Insertar
-            </button>
           </div>
-        </div>
 
-        {/* Formulario para actualizar/eliminar administrador */}
-        <div className="card mb-4">
-          <div className="card-header">Actualizar/Eliminar Administrador</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>ID Administrador</label>
-              <input
-                type="text"
-                className="form-control"
-                name="id"
-                value={adminData.id}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="button-group">
-              <button
-                className="btn btn-success mt-2 mr-2"
-                onClick={handleAdminUpdate}
-              >
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Administrador</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>ID</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="id"
+                  value={adminData.id}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
                 Actualizar
               </button>
-              <button
-                className="btn btn-danger mt-2"
-                onClick={handleAdminDelete}
-              >
+              <button className="btn btn-danger mt-2" onClick={handleDelete}>
                 Eliminar
               </button>
             </div>

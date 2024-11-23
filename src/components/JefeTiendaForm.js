@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  fetchJefesTienda,
-  insertJefeTienda,
-  updateJefeTienda,
-  deleteJefeTienda,
-} from '../apiService';
+import { fetchJefesTienda, insertJefeTienda, updateJefeTienda, deleteJefeTienda } from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
@@ -14,11 +9,9 @@ function JefeTiendaForm() {
     telefono: '',
     nombre: '',
     codigoadministrador: '',
-    id: '',
   });
 
   const navigate = useNavigate();
-
   const [jefesTienda, setJefesTienda] = useState([]);
 
   const loadJefesTienda = async () => {
@@ -39,36 +32,39 @@ function JefeTiendaForm() {
     setJefeTiendaData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleJefeTiendaInsert = async () => {
+  const handleInsert = async () => {
     try {
       const { correo, telefono, nombre, codigoadministrador } = jefeTiendaData;
       await insertJefeTienda({ correo, telefono, nombre, codigoadministrador });
-      alert('Jefe de tienda insertado');
+      alert('Jefe de Tienda insertado');
       loadJefesTienda();
+      setJefeTiendaData({ correo: '', telefono: '', nombre: '', codigoadministrador: '' });
     } catch (error) {
-      alert('Error al insertar jefe de tienda');
+      alert('Error al insertar Jefe de Tienda');
     }
   };
 
-  const handleJefeTiendaUpdate = async () => {
+  const handleUpdate = async () => {
     try {
-      const { id, correo, telefono, nombre, codigoadministrador } = jefeTiendaData;
-      await updateJefeTienda(id, { correo, telefono, nombre, codigoadministrador });
-      alert('Jefe de tienda actualizado');
+      const { codigoadministrador, correo, telefono, nombre } = jefeTiendaData;
+      await updateJefeTienda(codigoadministrador, { correo, telefono, nombre });
+      alert('Jefe de Tienda actualizado');
       loadJefesTienda();
+      setJefeTiendaData({ correo: '', telefono: '', nombre: '', codigoadministrador: '' });
     } catch (error) {
-      alert('Error al actualizar jefe de tienda');
+      alert('Error al actualizar Jefe de Tienda');
     }
   };
 
-  const handleJefeTiendaDelete = async () => {
+  const handleDelete = async () => {
     try {
-      const { id } = jefeTiendaData;
-      await deleteJefeTienda(id);
-      alert('Jefe de tienda eliminado');
+      const { codigoadministrador } = jefeTiendaData;
+      await deleteJefeTienda(codigoadministrador);
+      alert('Jefe de Tienda eliminado');
       loadJefesTienda();
+      setJefeTiendaData({ correo: '', telefono: '', nombre: '', codigoadministrador: '' });
     } catch (error) {
-      alert('Error al eliminar jefe de tienda');
+      alert('Error al eliminar Jefe de Tienda');
     }
   };
 
@@ -80,81 +76,73 @@ function JefeTiendaForm() {
           Regresar al Menú
         </button>
 
-        {/* Formulario para insertar jefe de tienda */}
-        <div className="card mb-4">
-          <div className="card-header">Jefe de Tienda</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>Correo</label>
-              <input
-                type="email"
-                className="form-control"
-                name="correo"
-                value={jefeTiendaData.correo}
-                onChange={(e) => handleInputChange(e)}
-              />
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Jefe de Tienda</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Correo</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="correo"
+                  value={jefeTiendaData.correo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={jefeTiendaData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={jefeTiendaData.nombre}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Código Administrador</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigoadministrador"
+                  value={jefeTiendaData.codigoadministrador}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-primary mt-2" onClick={handleInsert}>
+                Insertar
+              </button>
             </div>
-            <div className="form-group">
-              <label>Teléfono</label>
-              <input
-                type="text"
-                className="form-control"
-                name="telefono"
-                value={jefeTiendaData.telefono}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                name="nombre"
-                value={jefeTiendaData.nombre}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Código Administrador</label>
-              <input
-                type="number"
-                className="form-control"
-                name="codigoadministrador"
-                value={jefeTiendaData.codigoadministrador}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <button className="btn btn-primary mt-2" onClick={handleJefeTiendaInsert}>
-              Insertar
-            </button>
           </div>
-        </div>
 
-        {/* Formulario para actualizar/eliminar jefe de tienda */}
-        <div className="card mb-4">
-          <div className="card-header">Actualizar/Eliminar Jefe de Tienda</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>ID Empleado</label>
-              <input
-                type="text"
-                className="form-control"
-                name="id"
-                value={jefeTiendaData.id}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="button-group">
-              <button
-                className="btn btn-success mt-2 mr-2"
-                onClick={handleJefeTiendaUpdate}
-              >
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Jefe de Tienda</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Código Administrador</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigoadministrador"
+                  value={jefeTiendaData.codigoadministrador}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
                 Actualizar
               </button>
-              <button
-                className="btn btn-danger mt-2"
-                onClick={handleJefeTiendaDelete}
-              >
+              <button className="btn btn-danger mt-2" onClick={handleDelete}>
                 Eliminar
               </button>
             </div>
@@ -167,21 +155,19 @@ function JefeTiendaForm() {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Código Administrador</th>
               <th>Correo</th>
               <th>Teléfono</th>
               <th>Nombre</th>
-              <th>Código Administrador</th>
             </tr>
           </thead>
           <tbody>
             {jefesTienda.map((jefe) => (
-              <tr key={jefe.id}>
-                <td>{jefe.id}</td>
+              <tr key={jefe.codigoadministrador}>
+                <td>{jefe.codigoadministrador}</td>
                 <td>{jefe.correo}</td>
                 <td>{jefe.telefono}</td>
                 <td>{jefe.nombre}</td>
-                <td>{jefe.codigoadministrador}</td>
               </tr>
             ))}
           </tbody>

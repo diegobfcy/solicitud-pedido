@@ -13,7 +13,6 @@ function DetalleForm() {
   });
 
   const navigate = useNavigate();
-
   const [detalles, setDetalles] = useState([]);
 
   const loadDetalles = async () => {
@@ -40,8 +39,9 @@ function DetalleForm() {
       await insertDetalle({ marca, tipo, cantidad, codigopedido });
       alert('Detalle insertado');
       loadDetalles();
+      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
     } catch (error) {
-      alert('Error al insertar Detalle');
+      alert('Error al insertar detalle');
     }
   };
 
@@ -51,8 +51,9 @@ function DetalleForm() {
       await updateDetalle(id, { marca, tipo, cantidad, codigopedido });
       alert('Detalle actualizado');
       loadDetalles();
+      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
     } catch (error) {
-      alert('Error al actualizar Detalle');
+      alert('Error al actualizar detalle');
     }
   };
 
@@ -62,8 +63,9 @@ function DetalleForm() {
       await deleteDetalle(id);
       alert('Detalle eliminado');
       loadDetalles();
+      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
     } catch (error) {
-      alert('Error al eliminar Detalle');
+      alert('Error al eliminar detalle');
     }
   };
 
@@ -78,79 +80,96 @@ function DetalleForm() {
           Regresar al Menú
         </button>
 
-        <div className="card mb-4">
-          <div className="card-header">Detalle</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>Marca</label>
-              <input
-                type="text"
-                className="form-control"
-                name="marca"
-                value={detalleData.marca}
-                onChange={handleInputChange}
-              />
+        {/* Contenedor principal del formulario */}
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          {/* Formulario para insertar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Detalle</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Marca</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="marca"
+                  value={detalleData.marca}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Tipo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="tipo"
+                  value={detalleData.tipo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Cantidad</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="cantidad"
+                  value={detalleData.cantidad}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Código Pedido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigopedido"
+                  value={detalleData.codigopedido}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-primary mt-2" onClick={handleInsert}>
+                Insertar
+              </button>
             </div>
-            <div className="form-group">
-              <label>Tipo</label>
-              <input
-                type="text"
-                className="form-control"
-                name="tipo"
-                value={detalleData.tipo}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Cantidad</label>
-              <input
-                type="number"
-                className="form-control"
-                name="cantidad"
-                value={detalleData.cantidad}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Código Pedido</label>
-              <input
-                type="number"
-                className="form-control"
-                name="codigopedido"
-                value={detalleData.codigopedido}
-                onChange={handleInputChange}
-              />
-            </div>
-            <button className="btn btn-primary mt-2" onClick={handleInsert}>
-              Insertar
-            </button>
           </div>
-        </div>
 
-        <div className="card mb-4">
-          <div className="card-header">Actualizar/Eliminar Detalle</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>ID Detalle</label>
-              <input
-                type="text"
-                className="form-control"
-                name="id"
-                value={detalleData.id}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="button-group">
-              <button
-                className="btn btn-success mt-2 mr-2"
-                onClick={handleUpdate}
-              >
+          {/* Formulario para actualizar/eliminar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Detalle</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>ID Detalle</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="id"
+                  value={detalleData.id}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Marca</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="marca"
+                  value={detalleData.marca}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Tipo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="tipo"
+                  value={detalleData.tipo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
                 Actualizar
               </button>
-              <button
-                className="btn btn-danger mt-2"
-                onClick={handleDelete}
-              >
+              <button className="btn btn-danger mt-2" onClick={handleDelete}>
                 Eliminar
               </button>
             </div>

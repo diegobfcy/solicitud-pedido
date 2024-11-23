@@ -5,12 +5,11 @@ import './Form.css';
 
 function TelefonoForm() {
   const [telefonoData, setTelefonoData] = useState({
+    codigopedido: '',
     telefono: '',
-    id: '',
   });
 
   const navigate = useNavigate();
-
   const [telefonos, setTelefonos] = useState([]);
 
   const loadTelefonos = async () => {
@@ -33,10 +32,11 @@ function TelefonoForm() {
 
   const handleInsert = async () => {
     try {
-      const { telefono } = telefonoData;
-      await insertTelefono({ telefono });
+      const { codigopedido, telefono } = telefonoData;
+      await insertTelefono({ codigopedido, telefono });
       alert('Teléfono insertado');
       loadTelefonos();
+      setTelefonoData({ codigopedido: '', telefono: '' });
     } catch (error) {
       alert('Error al insertar Teléfono');
     }
@@ -44,10 +44,11 @@ function TelefonoForm() {
 
   const handleUpdate = async () => {
     try {
-      const { id, telefono } = telefonoData;
-      await updateTelefono(id, { telefono });
+      const { codigopedido, telefono } = telefonoData;
+      await updateTelefono(codigopedido, { telefono });
       alert('Teléfono actualizado');
       loadTelefonos();
+      setTelefonoData({ codigopedido: '', telefono: '' });
     } catch (error) {
       alert('Error al actualizar Teléfono');
     }
@@ -55,10 +56,11 @@ function TelefonoForm() {
 
   const handleDelete = async () => {
     try {
-      const { id } = telefonoData;
-      await deleteTelefono(id);
+      const { codigopedido } = telefonoData;
+      await deleteTelefono(codigopedido);
       alert('Teléfono eliminado');
       loadTelefonos();
+      setTelefonoData({ codigopedido: '', telefono: '' });
     } catch (error) {
       alert('Error al eliminar Teléfono');
     }
@@ -68,46 +70,74 @@ function TelefonoForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Teléfonos</h2>
-        <button
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
+        <button className="back-button" onClick={() => navigate('/')}>
           Regresar al Menú
         </button>
 
-        <div className="card mb-4">
-          <div className="card-header">Teléfono</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>Teléfono</label>
-              <input
-                type="text"
-                className="form-control"
-                name="telefono"
-                value={telefonoData.telefono}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>ID</label>
-              <input
-                type="text"
-                className="form-control"
-                name="id"
-                value={telefonoData.id}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="button-group">
+        {/* Contenedor principal del formulario */}
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          {/* Formulario para insertar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Teléfono</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Código Pedido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigopedido"
+                  value={telefonoData.codigopedido}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={telefonoData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
               <button className="btn btn-primary mt-2" onClick={handleInsert}>
                 Insertar
               </button>
-              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
-                Actualizar
-              </button>
-              <button className="btn btn-danger mt-2" onClick={handleDelete}>
-                Eliminar
-              </button>
+            </div>
+          </div>
+
+          {/* Formulario para actualizar/eliminar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Teléfono</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Código Pedido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigopedido"
+                  value={telefonoData.codigopedido}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={telefonoData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="button-group">
+                <button className="btn btn-success mt-2" onClick={handleUpdate}>
+                  Actualizar
+                </button>
+                <button className="btn btn-danger mt-2" onClick={handleDelete}>
+                  Eliminar
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -118,13 +148,15 @@ function TelefonoForm() {
         <table>
           <thead>
             <tr>
+              <th>Código Pedido</th>
               <th>Teléfono</th>
             </tr>
           </thead>
           <tbody>
-            {telefonos.map((tel) => (
-              <tr key={tel.telefono}>
-                <td>{tel.telefono}</td>
+            {telefonos.map((telefono) => (
+              <tr key={telefono.codigopedido}>
+                <td>{telefono.codigopedido}</td>
+                <td>{telefono.telefono}</td>
               </tr>
             ))}
           </tbody>

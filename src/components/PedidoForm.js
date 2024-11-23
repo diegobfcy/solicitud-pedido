@@ -14,7 +14,6 @@ function PedidoForm() {
   });
 
   const navigate = useNavigate();
-
   const [pedidos, setPedidos] = useState([]);
 
   const loadPedidos = async () => {
@@ -41,6 +40,7 @@ function PedidoForm() {
       await insertPedido({ correo, telefono, nombre, codigoadministrador, razonsocialsede });
       alert('Pedido insertado');
       loadPedidos();
+      setPedidoData({ correo: '', telefono: '', nombre: '', codigoadministrador: '', razonsocialsede: '', id: '' });
     } catch (error) {
       alert('Error al insertar Pedido');
     }
@@ -52,6 +52,7 @@ function PedidoForm() {
       await updatePedido(id, { correo, telefono, nombre, codigoadministrador, razonsocialsede });
       alert('Pedido actualizado');
       loadPedidos();
+      setPedidoData({ correo: '', telefono: '', nombre: '', codigoadministrador: '', razonsocialsede: '', id: '' });
     } catch (error) {
       alert('Error al actualizar Pedido');
     }
@@ -63,6 +64,7 @@ function PedidoForm() {
       await deletePedido(id);
       alert('Pedido eliminado');
       loadPedidos();
+      setPedidoData({ correo: '', telefono: '', nombre: '', codigoadministrador: '', razonsocialsede: '', id: '' });
     } catch (error) {
       alert('Error al eliminar Pedido');
     }
@@ -72,88 +74,116 @@ function PedidoForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Pedidos</h2>
-        <button className="back-button" onClick={() => navigate('/')}>
+        <button
+          className="back-button"
+          onClick={() => navigate('/')}
+        >
           Regresar al Menú
         </button>
 
-        <div className="card mb-4">
-          <div className="card-header">Pedido</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>Correo</label>
-              <input
-                type="email"
-                className="form-control"
-                name="correo"
-                value={pedidoData.correo}
-                onChange={handleInputChange}
-              />
+        {/* Contenedor principal del formulario */}
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          {/* Formulario para insertar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Pedido</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Correo</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="correo"
+                  value={pedidoData.correo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={pedidoData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={pedidoData.nombre}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Código Administrador</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="codigoadministrador"
+                  value={pedidoData.codigoadministrador}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Razón Social Sede</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="razonsocialsede"
+                  value={pedidoData.razonsocialsede}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-primary mt-2" onClick={handleInsert}>
+                Insertar
+              </button>
             </div>
-            <div className="form-group">
-              <label>Teléfono</label>
-              <input
-                type="text"
-                className="form-control"
-                name="telefono"
-                value={pedidoData.telefono}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                name="nombre"
-                value={pedidoData.nombre}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Código Administrador</label>
-              <input
-                type="text"
-                className="form-control"
-                name="codigoadministrador"
-                value={pedidoData.codigoadministrador}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Razón Social Sede</label>
-              <input
-                type="text"
-                className="form-control"
-                name="razonsocialsede"
-                value={pedidoData.razonsocialsede}
-                onChange={handleInputChange}
-              />
-            </div>
-            <button className="btn btn-primary mt-2" onClick={handleInsert}>
-              Insertar
-            </button>
           </div>
-        </div>
 
-        <div className="card mb-4">
-          <div className="card-header">Actualizar/Eliminar Pedido</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>ID Pedido</label>
-              <input
-                type="text"
-                className="form-control"
-                name="id"
-                value={pedidoData.id}
-                onChange={handleInputChange}
-              />
+          {/* Formulario para actualizar/eliminar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Pedido</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>ID Pedido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="id"
+                  value={pedidoData.id}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Correo</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="correo"
+                  value={pedidoData.correo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={pedidoData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
+                Actualizar
+              </button>
+              <button className="btn btn-danger mt-2" onClick={handleDelete}>
+                Eliminar
+              </button>
             </div>
-            <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
-              Actualizar
-            </button>
-            <button className="btn btn-danger mt-2" onClick={handleDelete}>
-              Eliminar
-            </button>
           </div>
         </div>
       </div>

@@ -10,7 +10,6 @@ function DireccionForm() {
   });
 
   const navigate = useNavigate();
-
   const [direcciones, setDirecciones] = useState([]);
 
   const loadDirecciones = async () => {
@@ -37,6 +36,7 @@ function DireccionForm() {
       await insertDireccion({ ruc, direccion });
       alert('Dirección insertada');
       loadDirecciones();
+      setDireccionData({ ruc: '', direccion: '' });
     } catch (error) {
       alert('Error al insertar Dirección');
     }
@@ -48,6 +48,7 @@ function DireccionForm() {
       await updateDireccion(ruc, { direccion });
       alert('Dirección actualizada');
       loadDirecciones();
+      setDireccionData({ ruc: '', direccion: '' });
     } catch (error) {
       alert('Error al actualizar Dirección');
     }
@@ -59,6 +60,7 @@ function DireccionForm() {
       await deleteDireccion(ruc);
       alert('Dirección eliminada');
       loadDirecciones();
+      setDireccionData({ ruc: '', direccion: '' });
     } catch (error) {
       alert('Error al eliminar Dirección');
     }
@@ -68,46 +70,64 @@ function DireccionForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Direcciones</h2>
-        <button
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
+        <button className="back-button" onClick={() => navigate('/')}>
           Regresar al Menú
         </button>
 
-        <div className="card mb-4">
-          <div className="card-header">Dirección</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>RUC</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ruc"
-                value={direccionData.ruc}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Dirección</label>
-              <input
-                type="text"
-                className="form-control"
-                name="direccion"
-                value={direccionData.direccion}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="button-group">
+        {/* Contenedor principal del formulario */}
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          {/* Formulario para insertar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Dirección</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>RUC</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="ruc"
+                  value={direccionData.ruc}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Dirección</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="direccion"
+                  value={direccionData.direccion}
+                  onChange={handleInputChange}
+                />
+              </div>
               <button className="btn btn-primary mt-2" onClick={handleInsert}>
                 Insertar
               </button>
-              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
-                Actualizar
-              </button>
-              <button className="btn btn-danger mt-2" onClick={handleDelete}>
-                Eliminar
-              </button>
+            </div>
+          </div>
+
+          {/* Formulario para actualizar/eliminar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Dirección</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>RUC</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="ruc"
+                  value={direccionData.ruc}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="button-group">
+                <button className="btn btn-success mt-2" onClick={handleUpdate}>
+                  Actualizar
+                </button>
+                <button className="btn btn-danger mt-2" onClick={handleDelete}>
+                  Eliminar
+                </button>
+              </div>
             </div>
           </div>
         </div>

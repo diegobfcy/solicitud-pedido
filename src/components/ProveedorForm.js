@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import {
-  fetchProveedores,
-  insertProveedor,
-  updateProveedor,
-  deleteProveedor,
-} from '../apiService';
+import { fetchProveedores, insertProveedor, updateProveedor, deleteProveedor } from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
-function ProveedorForm() {
+function ProveedoresForm() {
   const [proveedorData, setProveedorData] = useState({
+    nombre: '',
+    telefono: '',
+    direccion: '',
     ruc: '',
-    razonsocial: '',
-    correo: '',
   });
 
   const navigate = useNavigate();
-
   const [proveedores, setProveedores] = useState([]);
 
   const loadProveedores = async () => {
@@ -37,36 +32,39 @@ function ProveedorForm() {
     setProveedorData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleProveedorInsert = async () => {
+  const handleInsert = async () => {
     try {
-      const { ruc, razonsocial, correo } = proveedorData;
-      await insertProveedor({ ruc, razonsocial, correo });
+      const { nombre, telefono, direccion, ruc } = proveedorData;
+      await insertProveedor({ nombre, telefono, direccion, ruc });
       alert('Proveedor insertado');
       loadProveedores();
+      setProveedorData({ nombre: '', telefono: '', direccion: '', ruc: '' });
     } catch (error) {
-      alert('Error al insertar proveedor');
+      alert('Error al insertar Proveedor');
     }
   };
 
-  const handleProveedorUpdate = async () => {
+  const handleUpdate = async () => {
     try {
-      const { ruc, razonsocial, correo } = proveedorData;
-      await updateProveedor(ruc, { razonsocial, correo });
+      const { ruc, nombre, telefono, direccion } = proveedorData;
+      await updateProveedor(ruc, { nombre, telefono, direccion });
       alert('Proveedor actualizado');
       loadProveedores();
+      setProveedorData({ nombre: '', telefono: '', direccion: '', ruc: '' });
     } catch (error) {
-      alert('Error al actualizar proveedor');
+      alert('Error al actualizar Proveedor');
     }
   };
 
-  const handleProveedorDelete = async () => {
+  const handleDelete = async () => {
     try {
       const { ruc } = proveedorData;
       await deleteProveedor(ruc);
       alert('Proveedor eliminado');
       loadProveedores();
+      setProveedorData({ nombre: '', telefono: '', direccion: '', ruc: '' });
     } catch (error) {
-      alert('Error al eliminar proveedor');
+      alert('Error al eliminar Proveedor');
     }
   };
 
@@ -74,69 +72,103 @@ function ProveedorForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Proveedores</h2>
-        <button className="back-button" onClick={() => navigate('/')}>
+        <button
+          className="back-button"
+          onClick={() => navigate('/')}
+        >
           Regresar al Menú
         </button>
 
-        {/* Formulario para insertar proveedor */}
-        <div className="card mb-4">
-          <div className="card-header">Proveedor</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>RUC</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ruc"
-                value={proveedorData.ruc}
-                onChange={(e) => handleInputChange(e)}
-              />
+        {/* Contenedor principal del formulario */}
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          {/* Formulario para insertar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Proveedor</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={proveedorData.nombre}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={proveedorData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Dirección</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="direccion"
+                  value={proveedorData.direccion}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>RUC</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="ruc"
+                  value={proveedorData.ruc}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-primary mt-2" onClick={handleInsert}>
+                Insertar
+              </button>
             </div>
-            <div className="form-group">
-              <label>Razón Social</label>
-              <input
-                type="text"
-                className="form-control"
-                name="razonsocial"
-                value={proveedorData.razonsocial}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Correo</label>
-              <input
-                type="email"
-                className="form-control"
-                name="correo"
-                value={proveedorData.correo}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <button className="btn btn-primary mt-2" onClick={handleProveedorInsert}>
-              Insertar
-            </button>
           </div>
-        </div>
 
-        {/* Formulario para actualizar/eliminar proveedor */}
-        <div className="card mb-4">
-          <div className="card-header">Actualizar/Eliminar Proveedor</div>
-          <div className="card-body">
-            <div className="form-group">
-              <label>RUC</label>
-              <input
-                type="text"
-                className="form-control"
-                name="ruc"
-                value={proveedorData.ruc}
-                onChange={(e) => handleInputChange(e)}
-              />
-            </div>
-            <div className="button-group">
-              <button className="btn btn-success mt-2 mr-2" onClick={handleProveedorUpdate}>
+          {/* Formulario para actualizar/eliminar */}
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Proveedor</div>
+            <div className="card-body">
+              <div className="form-group">
+                <label>RUC</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="ruc"
+                  value={proveedorData.ruc}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={proveedorData.nombre}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="telefono"
+                  value={proveedorData.telefono}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button className="btn btn-success mt-2 mr-2" onClick={handleUpdate}>
                 Actualizar
               </button>
-              <button className="btn btn-danger mt-2" onClick={handleProveedorDelete}>
+              <button className="btn btn-danger mt-2" onClick={handleDelete}>
                 Eliminar
               </button>
             </div>
@@ -150,16 +182,18 @@ function ProveedorForm() {
           <thead>
             <tr>
               <th>RUC</th>
-              <th>Razón Social</th>
-              <th>Correo</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Dirección</th>
             </tr>
           </thead>
           <tbody>
             {proveedores.map((proveedor) => (
               <tr key={proveedor.ruc}>
                 <td>{proveedor.ruc}</td>
-                <td>{proveedor.razonsocial}</td>
-                <td>{proveedor.correo}</td>
+                <td>{proveedor.nombre}</td>
+                <td>{proveedor.telefono}</td>
+                <td>{proveedor.direccion}</td>
               </tr>
             ))}
           </tbody>
@@ -169,4 +203,4 @@ function ProveedorForm() {
   );
 }
 
-export default ProveedorForm;
+export default ProveedoresForm;
