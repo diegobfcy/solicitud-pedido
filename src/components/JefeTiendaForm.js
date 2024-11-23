@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { fetchJefesTienda, insertJefeTienda, updateJefeTienda, deleteJefeTienda } from '../apiService';
+import {
+  fetchJefesTienda,
+  insertJefeTienda,
+  updateJefeTienda,
+  deleteJefeTienda,
+} from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
 function JefeTiendaForm() {
   const [jefeTiendaData, setJefeTiendaData] = useState({
+    id: '',
     correo: '',
     telefono: '',
     nombre: '',
@@ -36,35 +42,35 @@ function JefeTiendaForm() {
     try {
       const { correo, telefono, nombre, codigoadministrador } = jefeTiendaData;
       await insertJefeTienda({ correo, telefono, nombre, codigoadministrador });
-      alert('Jefe de Tienda insertado');
+      alert('Jefe de tienda insertado');
       loadJefesTienda();
-      setJefeTiendaData({ correo: '', telefono: '', nombre: '', codigoadministrador: '' });
+      setJefeTiendaData({ id: '', correo: '', telefono: '', nombre: '', codigoadministrador: '' });
     } catch (error) {
-      alert('Error al insertar Jefe de Tienda');
+      alert('Error al insertar jefe de tienda');
     }
   };
 
   const handleUpdate = async () => {
     try {
-      const { codigoadministrador, correo, telefono, nombre } = jefeTiendaData;
-      await updateJefeTienda(codigoadministrador, { correo, telefono, nombre });
-      alert('Jefe de Tienda actualizado');
+      const { id, correo, telefono, nombre, codigoadministrador } = jefeTiendaData;
+      await updateJefeTienda(id, { correo, telefono, nombre, codigoadministrador });
+      alert('Jefe de tienda actualizado');
       loadJefesTienda();
-      setJefeTiendaData({ correo: '', telefono: '', nombre: '', codigoadministrador: '' });
+      setJefeTiendaData({ id: '', correo: '', telefono: '', nombre: '', codigoadministrador: '' });
     } catch (error) {
-      alert('Error al actualizar Jefe de Tienda');
+      alert('Error al actualizar jefe de tienda');
     }
   };
 
   const handleDelete = async () => {
     try {
-      const { codigoadministrador } = jefeTiendaData;
-      await deleteJefeTienda(codigoadministrador);
-      alert('Jefe de Tienda eliminado');
+      const { id } = jefeTiendaData;
+      await deleteJefeTienda(id);
+      alert('Jefe de tienda eliminado');
       loadJefesTienda();
-      setJefeTiendaData({ correo: '', telefono: '', nombre: '', codigoadministrador: '' });
+      setJefeTiendaData({ id: '', correo: '', telefono: '', nombre: '', codigoadministrador: '' });
     } catch (error) {
-      alert('Error al eliminar Jefe de Tienda');
+      alert('Error al eliminar jefe de tienda');
     }
   };
 
@@ -113,7 +119,7 @@ function JefeTiendaForm() {
               <div className="form-group">
                 <label>Código Administrador</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   name="codigoadministrador"
                   value={jefeTiendaData.codigoadministrador}
@@ -130,12 +136,12 @@ function JefeTiendaForm() {
             <div className="card-header">Actualizar/Eliminar Jefe de Tienda</div>
             <div className="card-body">
               <div className="form-group">
-                <label>Código Administrador</label>
+                <label>ID</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="codigoadministrador"
-                  value={jefeTiendaData.codigoadministrador}
+                  name="id"
+                  value={jefeTiendaData.id}
                   onChange={handleInputChange}
                 />
               </div>
@@ -155,19 +161,23 @@ function JefeTiendaForm() {
         <table>
           <thead>
             <tr>
-              <th>Código Administrador</th>
+              <th>ID</th>
+              <th>Código Empleado</th>
               <th>Correo</th>
               <th>Teléfono</th>
               <th>Nombre</th>
+              <th>Código Administrador</th>
             </tr>
           </thead>
           <tbody>
             {jefesTienda.map((jefe) => (
-              <tr key={jefe.codigoadministrador}>
-                <td>{jefe.codigoadministrador}</td>
+              <tr key={jefe.id}>
+                <td>{jefe.id}</td>
+                <td>{jefe.codigoempleado}</td>
                 <td>{jefe.correo}</td>
                 <td>{jefe.telefono}</td>
                 <td>{jefe.nombre}</td>
+                <td>{jefe.codigoadministrador}</td>
               </tr>
             ))}
           </tbody>

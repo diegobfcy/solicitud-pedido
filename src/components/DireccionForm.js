@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { fetchDirecciones, insertDireccion, updateDireccion, deleteDireccion } from '../apiService';
+import {
+  fetchDirecciones,
+  insertDireccion,
+  updateDireccion,
+  deleteDireccion,
+} from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
@@ -38,7 +43,7 @@ function DireccionForm() {
       loadDirecciones();
       setDireccionData({ ruc: '', direccion: '' });
     } catch (error) {
-      alert('Error al insertar Dirección');
+      alert('Error al insertar dirección');
     }
   };
 
@@ -50,7 +55,7 @@ function DireccionForm() {
       loadDirecciones();
       setDireccionData({ ruc: '', direccion: '' });
     } catch (error) {
-      alert('Error al actualizar Dirección');
+      alert('Error al actualizar dirección');
     }
   };
 
@@ -62,7 +67,7 @@ function DireccionForm() {
       loadDirecciones();
       setDireccionData({ ruc: '', direccion: '' });
     } catch (error) {
-      alert('Error al eliminar Dirección');
+      alert('Error al eliminar dirección');
     }
   };
 
@@ -74,9 +79,7 @@ function DireccionForm() {
           Regresar al Menú
         </button>
 
-        {/* Contenedor principal del formulario */}
         <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
-          {/* Formulario para insertar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Dirección</div>
             <div className="card-body">
@@ -106,7 +109,6 @@ function DireccionForm() {
             </div>
           </div>
 
-          {/* Formulario para actualizar/eliminar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Actualizar/Eliminar Dirección</div>
             <div className="card-body">
@@ -117,6 +119,16 @@ function DireccionForm() {
                   className="form-control"
                   name="ruc"
                   value={direccionData.ruc}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Dirección</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="direccion"
+                  value={direccionData.direccion}
                   onChange={handleInputChange}
                 />
               </div>

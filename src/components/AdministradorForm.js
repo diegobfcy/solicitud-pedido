@@ -149,6 +149,7 @@ function AdministradorForm() {
               <th>Nombre</th>
               <th>Teléfono</th>
               <th>Correo</th>
+              <th>Código Administrador</th>
             </tr>
           </thead>
           <tbody>
@@ -158,6 +159,7 @@ function AdministradorForm() {
                 <td>{admin.nombre}</td>
                 <td>{admin.telefono}</td>
                 <td>{admin.correo}</td>
+                <td>{admin.codigoadministrador}</td>
               </tr>
             ))}
           </tbody>

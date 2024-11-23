@@ -1,79 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-  fetchProveedorDetalles,
-  insertProveedorDetalle,
-  updateProveedorDetalle,
-  deleteProveedorDetalle,
+  fetchSedeDetalles,
+  insertSedeDetalle,
+  updateSedeDetalle,
+  deleteSedeDetalle,
 } from '../apiService';
+import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
-function ProveedorDetalleForm() {
-  const [proveedorDetalleData, setProveedorDetalleData] = useState({
-    telefono: '',
-    direccion: '',
-    ruc: '',
+function SedeDetalleForm() {
+  const [sedeDetalleData, setSedeDetalleData] = useState({
+    razonsocial: '',
+    departamento: '',
+    codigojefetienda: '',
   });
 
   const navigate = useNavigate();
+  const [sedeDetalles, setSedeDetalles] = useState([]);
 
-  const [proveedorDetalles, setProveedorDetalles] = useState([]);
-
-  const loadProveedorDetalles = async () => {
+  const loadSedeDetalles = async () => {
     try {
-      const response = await fetchProveedorDetalles();
-      setProveedorDetalles(response.data);
+      const response = await fetchSedeDetalles();
+      setSedeDetalles(response.data);
     } catch (error) {
-      console.error('Error fetching proveedor detalles:', error);
+      console.error('Error fetching sede detalles:', error);
     }
   };
 
   useEffect(() => {
-    loadProveedorDetalles();
+    loadSedeDetalles();
   }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProveedorDetalleData((prev) => ({ ...prev, [name]: value }));
+    setSedeDetalleData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleInsert = async () => {
     try {
-      const { telefono, direccion, ruc } = proveedorDetalleData;
-      await insertProveedorDetalle({ telefono, direccion, ruc });
-      alert('ProveedorDetalle insertado');
-      loadProveedorDetalles();
+      const { razonsocial, departamento, codigojefetienda } = sedeDetalleData;
+      await insertSedeDetalle({ razonsocial, departamento, codigojefetienda });
+      alert('Sede Detalle insertado');
+      loadSedeDetalles();
+      setSedeDetalleData({ razonsocial: '', departamento: '', codigojefetienda: '' });
     } catch (error) {
-      alert('Error al insertar ProveedorDetalle');
+      alert('Error al insertar Sede Detalle');
     }
   };
 
   const handleUpdate = async () => {
     try {
-      const { telefono, direccion, ruc } = proveedorDetalleData;
-      await updateProveedorDetalle(telefono, { direccion, ruc });
-      alert('ProveedorDetalle actualizado');
-      loadProveedorDetalles();
+      const { razonsocial, departamento, codigojefetienda } = sedeDetalleData;
+      await updateSedeDetalle(razonsocial, departamento, { codigojefetienda });
+      alert('Sede Detalle actualizado');
+      loadSedeDetalles();
+      setSedeDetalleData({ razonsocial: '', departamento: '', codigojefetienda: '' });
     } catch (error) {
-      alert('Error al actualizar ProveedorDetalle');
+      alert('Error al actualizar Sede Detalle');
     }
   };
 
   const handleDelete = async () => {
     try {
-      const { telefono } = proveedorDetalleData;
-      await deleteProveedorDetalle(telefono);
-      alert('ProveedorDetalle eliminado');
-      loadProveedorDetalles();
+      const { razonsocial, departamento } = sedeDetalleData;
+      await deleteSedeDetalle(razonsocial, departamento);
+      alert('Sede Detalle eliminado');
+      loadSedeDetalles();
+      setSedeDetalleData({ razonsocial: '', departamento: '', codigojefetienda: '' });
     } catch (error) {
-      alert('Error al eliminar ProveedorDetalle');
+      alert('Error al eliminar Sede Detalle');
     }
   };
 
   return (
     <div className="form-and-table-container">
       <div className="form-container">
-        <h2>Gestión de Detalles de Proveedores</h2>
+        <h2>Gestión de Detalles de Sedes</h2>
         <button
           className="back-button"
           onClick={() => navigate('/')}
@@ -81,35 +83,37 @@ function ProveedorDetalleForm() {
           Regresar al Menú
         </button>
 
-        <div className="form-group-container">
-          {/* Formulario para insertar */}
-          <div className="form-card">
-            <div className="form-header">Proveedor Detalle</div>
-            <div className="form-body">
+        <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Sede Detalle</div>
+            <div className="card-body">
               <div className="form-group">
-                <label>Teléfono</label>
+                <label>Razón Social</label>
                 <input
                   type="text"
-                  name="telefono"
-                  value={proveedorDetalleData.telefono}
+                  className="form-control"
+                  name="razonsocial"
+                  value={sedeDetalleData.razonsocial}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="form-group">
-                <label>Dirección</label>
+                <label>Departamento</label>
                 <input
                   type="text"
-                  name="direccion"
-                  value={proveedorDetalleData.direccion}
+                  className="form-control"
+                  name="departamento"
+                  value={sedeDetalleData.departamento}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="form-group">
-                <label>RUC</label>
+                <label>Código del Jefe de Tienda</label>
                 <input
                   type="text"
-                  name="ruc"
-                  value={proveedorDetalleData.ruc}
+                  className="form-control"
+                  name="codigojefetienda"
+                  value={sedeDetalleData.codigojefetienda}
                   onChange={handleInputChange}
                 />
               </div>
@@ -119,48 +123,44 @@ function ProveedorDetalleForm() {
             </div>
           </div>
 
-          {/* Formulario para actualizar/eliminar */}
-          <div className="form-card">
-            <div className="form-header">Actualizar/Eliminar Proveedor Detalle</div>
-            <div className="form-body">
+          <div className="card mb-4" style={{ flex: 1 }}>
+            <div className="card-header">Actualizar/Eliminar Sede Detalle</div>
+            <div className="card-body">
               <div className="form-group">
-                <label>Teléfono</label>
+                <label>Razón Social</label>
                 <input
                   type="text"
-                  name="telefono"
-                  value={proveedorDetalleData.telefono}
+                  className="form-control"
+                  name="razonsocial"
+                  value={sedeDetalleData.razonsocial}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="form-group">
-                <label>Dirección</label>
+                <label>Departamento</label>
                 <input
                   type="text"
-                  name="direccion"
-                  value={proveedorDetalleData.direccion}
+                  className="form-control"
+                  name="departamento"
+                  value={sedeDetalleData.departamento}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="form-group">
-                <label>RUC</label>
+                <label>Código del Jefe de Tienda</label>
                 <input
                   type="text"
-                  name="ruc"
-                  value={proveedorDetalleData.ruc}
+                  className="form-control"
+                  name="codigojefetienda"
+                  value={sedeDetalleData.codigojefetienda}
                   onChange={handleInputChange}
                 />
               </div>
               <div className="button-group">
-                <button
-                  className="btn btn-success mt-2 mr-2"
-                  onClick={handleUpdate}
-                >
+                <button className="btn btn-success mt-2" onClick={handleUpdate}>
                   Actualizar
                 </button>
-                <button
-                  className="btn btn-danger mt-2"
-                  onClick={handleDelete}
-                >
+                <button className="btn btn-danger mt-2" onClick={handleDelete}>
                   Eliminar
                 </button>
               </div>
@@ -170,21 +170,21 @@ function ProveedorDetalleForm() {
       </div>
 
       <div className="table-container">
-        <h2>Lista de Detalles de Proveedores</h2>
+        <h2>Lista de Detalles de Sedes</h2>
         <table>
           <thead>
             <tr>
-              <th>Teléfono</th>
-              <th>Dirección</th>
-              <th>RUC</th>
+              <th>Razón Social</th>
+              <th>Departamento</th>
+              <th>Código del Jefe de Tienda</th>
             </tr>
           </thead>
           <tbody>
-            {proveedorDetalles.map((detalle) => (
-              <tr key={detalle.telefono}>
-                <td>{detalle.telefono}</td>
-                <td>{detalle.direccion}</td>
-                <td>{detalle.ruc}</td>
+            {sedeDetalles.map((detalle) => (
+              <tr key={`${detalle.razonsocial}-${detalle.departamento}`}>
+                <td>{detalle.razonsocial}</td>
+                <td>{detalle.departamento}</td>
+                <td>{detalle.codigojefetienda}</td>
               </tr>
             ))}
           </tbody>
@@ -194,4 +194,4 @@ function ProveedorDetalleForm() {
   );
 }
 
-export default ProveedorDetalleForm;
+export default SedeDetalleForm;

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { fetchDetalles, insertDetalle, updateDetalle, deleteDetalle } from '../apiService';
+import {
+  fetchDetalles,
+  insertDetalle,
+  updateDetalle,
+  deleteDetalle,
+} from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
 function DetalleForm() {
   const [detalleData, setDetalleData] = useState({
+    codigodetalle: '',
     marca: '',
     tipo: '',
     cantidad: '',
@@ -39,7 +45,14 @@ function DetalleForm() {
       await insertDetalle({ marca, tipo, cantidad, codigopedido });
       alert('Detalle insertado');
       loadDetalles();
-      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
+      setDetalleData({
+        codigodetalle: '',
+        marca: '',
+        tipo: '',
+        cantidad: '',
+        codigopedido: '',
+        id: '',
+      });
     } catch (error) {
       alert('Error al insertar detalle');
     }
@@ -51,7 +64,14 @@ function DetalleForm() {
       await updateDetalle(id, { marca, tipo, cantidad, codigopedido });
       alert('Detalle actualizado');
       loadDetalles();
-      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
+      setDetalleData({
+        codigodetalle: '',
+        marca: '',
+        tipo: '',
+        cantidad: '',
+        codigopedido: '',
+        id: '',
+      });
     } catch (error) {
       alert('Error al actualizar detalle');
     }
@@ -63,7 +83,14 @@ function DetalleForm() {
       await deleteDetalle(id);
       alert('Detalle eliminado');
       loadDetalles();
-      setDetalleData({ marca: '', tipo: '', cantidad: '', codigopedido: '', id: '' });
+      setDetalleData({
+        codigodetalle: '',
+        marca: '',
+        tipo: '',
+        cantidad: '',
+        codigopedido: '',
+        id: '',
+      });
     } catch (error) {
       alert('Error al eliminar detalle');
     }
@@ -73,16 +100,11 @@ function DetalleForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Detalles</h2>
-        <button
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
+        <button className="back-button" onClick={() => navigate('/')}>
           Regresar al Menú
         </button>
 
-        {/* Contenedor principal del formulario */}
         <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
-          {/* Formulario para insertar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Detalle</div>
             <div className="card-body">
@@ -132,7 +154,6 @@ function DetalleForm() {
             </div>
           </div>
 
-          {/* Formulario para actualizar/eliminar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Actualizar/Eliminar Detalle</div>
             <div className="card-body">
@@ -143,26 +164,6 @@ function DetalleForm() {
                   className="form-control"
                   name="id"
                   value={detalleData.id}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Marca</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="marca"
-                  value={detalleData.marca}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Tipo</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="tipo"
-                  value={detalleData.tipo}
                   onChange={handleInputChange}
                 />
               </div>
@@ -182,7 +183,7 @@ function DetalleForm() {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Código Detalle</th>
               <th>Marca</th>
               <th>Tipo</th>
               <th>Cantidad</th>
@@ -191,8 +192,8 @@ function DetalleForm() {
           </thead>
           <tbody>
             {detalles.map((detalle) => (
-              <tr key={detalle.id}>
-                <td>{detalle.id}</td>
+              <tr key={detalle.codigodetalle}>
+                <td>{detalle.codigodetalle}</td>
                 <td>{detalle.marca}</td>
                 <td>{detalle.tipo}</td>
                 <td>{detalle.cantidad}</td>

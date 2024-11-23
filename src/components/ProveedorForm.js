@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProveedores, insertProveedor, updateProveedor, deleteProveedor } from '../apiService';
+import {
+  fetchProveedores,
+  insertProveedor,
+  updateProveedor,
+  deleteProveedor,
+} from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
-function ProveedoresForm() {
+function ProveedorForm() {
   const [proveedorData, setProveedorData] = useState({
-    nombre: '',
-    telefono: '',
-    direccion: '',
     ruc: '',
+    razonsocial: '',
+    correo: '',
+    id: '',
   });
 
   const navigate = useNavigate();
@@ -34,37 +39,37 @@ function ProveedoresForm() {
 
   const handleInsert = async () => {
     try {
-      const { nombre, telefono, direccion, ruc } = proveedorData;
-      await insertProveedor({ nombre, telefono, direccion, ruc });
+      const { ruc, razonsocial, correo } = proveedorData;
+      await insertProveedor({ ruc, razonsocial, correo });
       alert('Proveedor insertado');
       loadProveedores();
-      setProveedorData({ nombre: '', telefono: '', direccion: '', ruc: '' });
+      setProveedorData({ ruc: '', razonsocial: '', correo: '', id: '' });
     } catch (error) {
-      alert('Error al insertar Proveedor');
+      alert('Error al insertar proveedor');
     }
   };
 
   const handleUpdate = async () => {
     try {
-      const { ruc, nombre, telefono, direccion } = proveedorData;
-      await updateProveedor(ruc, { nombre, telefono, direccion });
+      const { id, ruc, razonsocial, correo } = proveedorData;
+      await updateProveedor(id, { ruc, razonsocial, correo });
       alert('Proveedor actualizado');
       loadProveedores();
-      setProveedorData({ nombre: '', telefono: '', direccion: '', ruc: '' });
+      setProveedorData({ ruc: '', razonsocial: '', correo: '', id: '' });
     } catch (error) {
-      alert('Error al actualizar Proveedor');
+      alert('Error al actualizar proveedor');
     }
   };
 
   const handleDelete = async () => {
     try {
-      const { ruc } = proveedorData;
-      await deleteProveedor(ruc);
+      const { id } = proveedorData;
+      await deleteProveedor(id);
       alert('Proveedor eliminado');
       loadProveedores();
-      setProveedorData({ nombre: '', telefono: '', direccion: '', ruc: '' });
+      setProveedorData({ ruc: '', razonsocial: '', correo: '', id: '' });
     } catch (error) {
-      alert('Error al eliminar Proveedor');
+      alert('Error al eliminar proveedor');
     }
   };
 
@@ -72,49 +77,14 @@ function ProveedoresForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Proveedores</h2>
-        <button
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
+        <button className="back-button" onClick={() => navigate('/')}>
           Regresar al Menú
         </button>
 
-        {/* Contenedor principal del formulario */}
         <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
-          {/* Formulario para insertar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Proveedor</div>
             <div className="card-body">
-              <div className="form-group">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="nombre"
-                  value={proveedorData.nombre}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Teléfono</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="telefono"
-                  value={proveedorData.telefono}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Dirección</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="direccion"
-                  value={proveedorData.direccion}
-                  onChange={handleInputChange}
-                />
-              </div>
               <div className="form-group">
                 <label>RUC</label>
                 <input
@@ -122,6 +92,26 @@ function ProveedoresForm() {
                   className="form-control"
                   name="ruc"
                   value={proveedorData.ruc}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Razón Social</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="razonsocial"
+                  value={proveedorData.razonsocial}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Correo</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  name="correo"
+                  value={proveedorData.correo}
                   onChange={handleInputChange}
                 />
               </div>
@@ -131,37 +121,16 @@ function ProveedoresForm() {
             </div>
           </div>
 
-          {/* Formulario para actualizar/eliminar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Actualizar/Eliminar Proveedor</div>
             <div className="card-body">
               <div className="form-group">
-                <label>RUC</label>
+                <label>ID</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="ruc"
-                  value={proveedorData.ruc}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="nombre"
-                  value={proveedorData.nombre}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Teléfono</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="telefono"
-                  value={proveedorData.telefono}
+                  name="id"
+                  value={proveedorData.id}
                   onChange={handleInputChange}
                 />
               </div>
@@ -182,18 +151,16 @@ function ProveedoresForm() {
           <thead>
             <tr>
               <th>RUC</th>
-              <th>Nombre</th>
-              <th>Teléfono</th>
-              <th>Dirección</th>
+              <th>Razón Social</th>
+              <th>Correo</th>
             </tr>
           </thead>
           <tbody>
             {proveedores.map((proveedor) => (
-              <tr key={proveedor.ruc}>
+              <tr key={proveedor.id}>
                 <td>{proveedor.ruc}</td>
-                <td>{proveedor.nombre}</td>
-                <td>{proveedor.telefono}</td>
-                <td>{proveedor.direccion}</td>
+                <td>{proveedor.razonsocial}</td>
+                <td>{proveedor.correo}</td>
               </tr>
             ))}
           </tbody>
@@ -203,4 +170,4 @@ function ProveedoresForm() {
   );
 }
 
-export default ProveedoresForm;
+export default ProveedorForm;

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPedidos, insertPedido, updatePedido, deletePedido } from '../apiService';
+import {
+  fetchPedidos,
+  insertPedido,
+  updatePedido,
+  deletePedido,
+} from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import './Form.css';
 
 function PedidoForm() {
   const [pedidoData, setPedidoData] = useState({
+    codigopedido: '',
     correo: '',
     telefono: '',
     nombre: '',
@@ -40,9 +46,17 @@ function PedidoForm() {
       await insertPedido({ correo, telefono, nombre, codigoadministrador, razonsocialsede });
       alert('Pedido insertado');
       loadPedidos();
-      setPedidoData({ correo: '', telefono: '', nombre: '', codigoadministrador: '', razonsocialsede: '', id: '' });
+      setPedidoData({
+        codigopedido: '',
+        correo: '',
+        telefono: '',
+        nombre: '',
+        codigoadministrador: '',
+        razonsocialsede: '',
+        id: '',
+      });
     } catch (error) {
-      alert('Error al insertar Pedido');
+      alert('Error al insertar pedido');
     }
   };
 
@@ -52,9 +66,17 @@ function PedidoForm() {
       await updatePedido(id, { correo, telefono, nombre, codigoadministrador, razonsocialsede });
       alert('Pedido actualizado');
       loadPedidos();
-      setPedidoData({ correo: '', telefono: '', nombre: '', codigoadministrador: '', razonsocialsede: '', id: '' });
+      setPedidoData({
+        codigopedido: '',
+        correo: '',
+        telefono: '',
+        nombre: '',
+        codigoadministrador: '',
+        razonsocialsede: '',
+        id: '',
+      });
     } catch (error) {
-      alert('Error al actualizar Pedido');
+      alert('Error al actualizar pedido');
     }
   };
 
@@ -64,9 +86,17 @@ function PedidoForm() {
       await deletePedido(id);
       alert('Pedido eliminado');
       loadPedidos();
-      setPedidoData({ correo: '', telefono: '', nombre: '', codigoadministrador: '', razonsocialsede: '', id: '' });
+      setPedidoData({
+        codigopedido: '',
+        correo: '',
+        telefono: '',
+        nombre: '',
+        codigoadministrador: '',
+        razonsocialsede: '',
+        id: '',
+      });
     } catch (error) {
-      alert('Error al eliminar Pedido');
+      alert('Error al eliminar pedido');
     }
   };
 
@@ -74,16 +104,11 @@ function PedidoForm() {
     <div className="form-and-table-container">
       <div className="form-container">
         <h2>Gestión de Pedidos</h2>
-        <button
-          className="back-button"
-          onClick={() => navigate('/')}
-        >
+        <button className="back-button" onClick={() => navigate('/')}>
           Regresar al Menú
         </button>
 
-        {/* Contenedor principal del formulario */}
         <div style={{ display: 'flex', gap: '20px', width: '100%' }}>
-          {/* Formulario para insertar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Pedido</div>
             <div className="card-body">
@@ -143,7 +168,6 @@ function PedidoForm() {
             </div>
           </div>
 
-          {/* Formulario para actualizar/eliminar */}
           <div className="card mb-4" style={{ flex: 1 }}>
             <div className="card-header">Actualizar/Eliminar Pedido</div>
             <div className="card-body">
@@ -154,26 +178,6 @@ function PedidoForm() {
                   className="form-control"
                   name="id"
                   value={pedidoData.id}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Correo</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  name="correo"
-                  value={pedidoData.correo}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Teléfono</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="telefono"
-                  value={pedidoData.telefono}
                   onChange={handleInputChange}
                 />
               </div>
@@ -193,7 +197,7 @@ function PedidoForm() {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Código Pedido</th>
               <th>Correo</th>
               <th>Teléfono</th>
               <th>Nombre</th>
@@ -203,8 +207,8 @@ function PedidoForm() {
           </thead>
           <tbody>
             {pedidos.map((pedido) => (
-              <tr key={pedido.id}>
-                <td>{pedido.id}</td>
+              <tr key={pedido.codigopedido}>
+                <td>{pedido.codigopedido}</td>
                 <td>{pedido.correo}</td>
                 <td>{pedido.telefono}</td>
                 <td>{pedido.nombre}</td>
