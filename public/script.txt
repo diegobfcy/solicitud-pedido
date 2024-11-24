@@ -1,0 +1,875 @@
+CREATE OR REPLACE FUNCTION sp_insert_tblAdministrador(
+    p_nombre VARCHAR(50),
+    p_telefono VARCHAR(9),
+    p_correo VARCHAR(25)
+) RETURNS INTEGER AS $$
+DECLARE
+    v_codigoadministrador INTEGER;
+BEGIN
+    INSERT INTO tblAdministrador (nombre, telefono, correo)
+    VALUES (p_nombre, p_telefono, p_correo)
+    RETURNING codigoadministrador INTO v_codigoadministrador;
+
+    RETURN v_codigoadministrador;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblAdministrador(
+    p_codigoadministrador INTEGER,
+    p_nombre VARCHAR(50),
+    p_telefono VARCHAR(9),
+    p_correo VARCHAR(25)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblAdministrador
+    SET nombre = p_nombre,
+        telefono = p_telefono,
+        correo = p_correo
+    WHERE codigoadministrador = p_codigoadministrador;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblAdministrador(
+    p_codigoadministrador INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblAdministrador
+    WHERE codigoadministrador = p_codigoadministrador;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblJefeTienda(
+    p_correo VARCHAR(25),
+    p_telefono VARCHAR(9),
+    p_nombre VARCHAR(20),
+    p_codigoadministrador INTEGER
+) RETURNS INTEGER AS $$
+DECLARE
+    v_codigoempleado INTEGER;
+BEGIN
+    INSERT INTO tblJefeTienda (correo, telefono, nombre, codigoadministrador)
+    VALUES (p_correo, p_telefono, p_nombre, p_codigoadministrador)
+    RETURNING codigoempleado INTO v_codigoempleado;
+
+    RETURN v_codigoempleado;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblJefeTienda(
+    p_codigoempleado INTEGER,
+    p_correo VARCHAR(25),
+    p_telefono VARCHAR(9),
+    p_nombre VARCHAR(20),
+    p_codigoadministrador INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblJefeTienda
+    SET correo = p_correo,
+        telefono = p_telefono,
+        nombre = p_nombre,
+        codigoadministrador = p_codigoadministrador
+    WHERE codigoempleado = p_codigoempleado;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblJefeTienda(
+    p_codigoempleado INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblJefeTienda
+    WHERE codigoempleado = p_codigoempleado;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblSede(
+    p_razonsocial VARCHAR(30),
+    p_calle VARCHAR(100),
+    p_ciudad VARCHAR(20),
+    p_numero VARCHAR(15),
+    p_telefono VARCHAR(9)
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO tblSede (razonsocial, calle, ciudad, numero, telefono)
+    VALUES (p_razonsocial, p_calle, p_ciudad, p_numero, p_telefono);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblSede(
+    p_razonsocial VARCHAR(30),
+    p_calle VARCHAR(100),
+    p_ciudad VARCHAR(20),
+    p_numero VARCHAR(15),
+    p_telefono VARCHAR(9)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblSede
+    SET calle = p_calle,
+        ciudad = p_ciudad,
+        numero = p_numero,
+        telefono = p_telefono
+    WHERE razonsocial = p_razonsocial;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblSede(
+    p_razonsocial VARCHAR(30)
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblSede
+    WHERE razonsocial = p_razonsocial;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblProveedor(
+    p_ruc VARCHAR(11),
+    p_razonsocial VARCHAR(50),
+    p_correo VARCHAR(25)
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO tblProveedor (ruc, razonsocial, correo)
+    VALUES (p_ruc, p_razonsocial, p_correo);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblProveedor(
+    p_ruc VARCHAR(11),
+    p_razonsocial VARCHAR(50),
+    p_correo VARCHAR(25)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblProveedor
+    SET razonsocial = p_razonsocial,
+        correo = p_correo
+    WHERE ruc = p_ruc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblProveedor(
+    p_ruc VARCHAR(11)
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblProveedor
+    WHERE ruc = p_ruc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblPedido(
+    p_correo VARCHAR(25),
+    p_telefono VARCHAR(9),
+    p_nombre VARCHAR(50),
+    p_codigoadministrador INTEGER,
+    p_razonsocialsede VARCHAR(50)
+) RETURNS INTEGER AS $$
+DECLARE
+    v_codigopedido INTEGER;
+BEGIN
+    INSERT INTO tblPedido (correo, telefono, nombre, codigoadministrador, razonsocialsede)
+    VALUES (p_correo, p_telefono, p_nombre, p_codigoadministrador, p_razonsocialsede)
+    RETURNING codigopedido INTO v_codigopedido;
+
+    RETURN v_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblPedido(
+    p_codigopedido INTEGER,
+    p_correo VARCHAR(25),
+    p_telefono VARCHAR(9),
+    p_nombre VARCHAR(50),
+    p_codigoadministrador INTEGER,
+    p_razonsocialsede VARCHAR(50)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblPedido
+    SET correo = p_correo,
+        telefono = p_telefono,
+        nombre = p_nombre,
+        codigoadministrador = p_codigoadministrador,
+        razonsocialsede = p_razonsocialsede
+    WHERE codigopedido = p_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblPedido(
+    p_codigopedido INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblPedido
+    WHERE codigopedido = p_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblDetalle(
+    p_marca VARCHAR(20),
+    p_tipo VARCHAR(6),
+    p_cantidad INTEGER,
+    p_codigopedido INTEGER
+) RETURNS INTEGER AS $$
+DECLARE
+    v_codigodetalle INTEGER;
+BEGIN
+    INSERT INTO tblDetalle (marca, tipo, cantidad, codigopedido)
+    VALUES (p_marca, p_tipo, p_cantidad, p_codigopedido)
+    RETURNING codigodetalle INTO v_codigodetalle;
+
+    RETURN v_codigodetalle;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblDetalle(
+    p_codigodetalle INTEGER,
+    p_marca VARCHAR(20),
+    p_tipo VARCHAR(6),
+    p_cantidad INTEGER,
+    p_codigopedido INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblDetalle
+    SET marca = p_marca,
+        tipo = p_tipo,
+        cantidad = p_cantidad,
+        codigopedido = p_codigopedido
+    WHERE codigodetalle = p_codigodetalle;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblDetalle(
+    p_codigodetalle INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblDetalle
+    WHERE codigodetalle = p_codigodetalle;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblRecibe(
+    p_rucproveedor VARCHAR(11),
+    p_codigopedido INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO tblRecibe (rucproveedor, codigopedido)
+    VALUES (p_rucproveedor, p_codigopedido);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblRecibe(
+    p_rucproveedor VARCHAR(11),
+    p_codigopedido INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblRecibe
+    WHERE rucproveedor = p_rucproveedor AND codigopedido = p_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblTelefono(
+    p_telefono VARCHAR(9)
+) RETURNS INTEGER AS $$
+DECLARE
+    v_codigopedido INTEGER;
+BEGIN
+    INSERT INTO tblTelefono (telefono)
+    VALUES (p_telefono)
+    RETURNING codigopedido INTO v_codigopedido;
+
+    RETURN v_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblTelefono(
+    p_codigopedido INTEGER,
+    p_telefono VARCHAR(9)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblTelefono
+    SET telefono = p_telefono
+    WHERE codigopedido = p_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblTelefono(
+    p_codigopedido INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblTelefono
+    WHERE codigopedido = p_codigopedido;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblDireccion(
+    p_ruc VARCHAR(11),
+    p_direccion VARCHAR(100)
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO tblDireccion (ruc, dirección)
+    VALUES (p_ruc, p_direccion);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblDireccion(
+    p_ruc VARCHAR(11),
+    p_direccion VARCHAR(100)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblDireccion
+    SET dirección = p_direccion
+    WHERE ruc = p_ruc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblDireccion(
+    p_ruc VARCHAR(11)
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblDireccion
+    WHERE ruc = p_ruc;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblProveedorDetalle(
+    p_telefono VARCHAR(9),
+    p_direccion VARCHAR(100),
+    p_ruc VARCHAR(50)
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO tblProveedorDetalle (telefono, direccion, ruc)
+    VALUES (p_telefono, p_direccion, p_ruc);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblProveedorDetalle(
+    p_telefono VARCHAR(9),
+    p_direccion VARCHAR(100),
+    p_ruc VARCHAR(50)
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblProveedorDetalle
+    SET direccion = p_direccion,
+        ruc = p_ruc
+    WHERE telefono = p_telefono;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblProveedorDetalle(
+    p_telefono VARCHAR(9)
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblProveedorDetalle
+    WHERE telefono = p_telefono;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+CREATE OR REPLACE FUNCTION sp_insert_tblSedeDetalle(
+    p_razonsocial VARCHAR(50),
+    p_departamento VARCHAR(20),
+    p_codigojefetienda INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO tblSedeDetalle (razonsocial, departamento, codigojefetienda)
+    VALUES (p_razonsocial, p_departamento, p_codigojefetienda);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_update_tblSedeDetalle(
+    p_razonsocial VARCHAR(50),
+    p_departamento VARCHAR(20),
+    p_codigojefetienda INTEGER
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE tblSedeDetalle
+    SET codigojefetienda = p_codigojefetienda
+    WHERE razonsocial = p_razonsocial AND departamento = p_departamento;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION sp_delete_tblSedeDetalle(
+    p_razonsocial VARCHAR(50),
+    p_departamento VARCHAR(20)
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM tblSedeDetalle
+    WHERE razonsocial = p_razonsocial AND departamento = p_departamento;
+END;
+$$ LANGUAGE plpgsql;
+
+
+--Triggers--
+
+CREATE TABLE tblAdministradorLogs (
+    log_id SERIAL PRIMARY KEY,
+    codigoadministrador INTEGER,
+    nombre VARCHAR(50),
+    telefono VARCHAR(9),
+    correo VARCHAR(25),
+    action VARCHAR(10),
+    action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE OR REPLACE FUNCTION trg_log_tblAdministrador()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'DELETE' THEN
+        INSERT INTO tblAdministradorLogs (codigoadministrador, nombre, telefono, correo, action)
+        VALUES (OLD.codigoadministrador, OLD.nombre, OLD.telefono, OLD.correo, 'DELETE');
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO tblAdministradorLogs (codigoadministrador, nombre, telefono, correo, action)
+        VALUES (NEW.codigoadministrador, NEW.nombre, NEW.telefono, NEW.correo, 'UPDATE');
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE TRIGGER trg_tblAdministrador
+AFTER DELETE OR UPDATE ON tblAdministrador
+FOR EACH ROW
+EXECUTE PROCEDURE trg_log_tblAdministrador();
+
+
+--DATOS--
+
+
+INSERT INTO tblAdministrador (nombre, telefono, correo) VALUES
+('Luis Treviño', '965214785', 'ltrevino@mail.com'),
+('Diego Centeno', '965214786', 'dcenteno@mail.com'),
+('Julio Espinoza', '965214787', 'jespinoza@mail.com'),
+('Giaccomo Paredes', '965214788', 'gparedes@mail.com'),
+('Tito Cuba', '965214789', 'tcuba@mail.com'),
+('Chimoltrufia Castro', '965214790', 'ccastro@mail.com'),
+('Pancracia Treviño', '965214791', 'ptrevino@mail.com'),
+('Luis Espinoza', '965214792', 'lespinoza@mail.com'),
+('Diego Paredes', '965214793', 'dparedes@mail.com'),
+('Julio Cuba', '965214794', 'jcuba@mail.com');
+
+INSERT INTO tblJefeTienda (correo, telefono, nombre, codigoadministrador) VALUES
+('jefe1@mail.com', '951847362', 'Luis Guillén', 1),
+('jefe2@mail.com', '951847363', 'Diego Tamayo', 2),
+('jefe3@mail.com', '951847364', 'Julio UCSM', 3),
+('jefe4@mail.com', '951847365', 'Giaccomo UCSP', 4),
+('jefe5@mail.com', '951847366', 'Tito UNSA', 5),
+('jefe6@mail.com', '951847367', 'Chimoltrufia Guillén', 6),
+('jefe7@mail.com', '951847368', 'Pancracia Tamayo', 7),
+('jefe8@mail.com', '951847369', 'Luis UCSM', 8),
+('jefe9@mail.com', '951847370', 'Diego UCSP', 9),
+('jefe10@mail.com', '951847371', 'Julio UNSA', 10);
+
+INSERT INTO tblSede (razonsocial, calle, ciudad, numero, telefono) VALUES
+('Guillén', 'Calle San José', 'Arequipa', '102', '958214785'),
+('Tamayo', 'Calle San Lázaro', 'Arequipa', '103', '958214786'),
+('UCSM', 'Calle San Francisco', 'Arequipa', '104', '958214787'),
+('UCSP', 'Calle San Martín', 'Arequipa', '105', '958214788'),
+('UNSA', 'Calle San Juan', 'Arequipa', '106', '958214789'),
+('Guillén 2', 'Calle San Luis', 'Arequipa', '107', '958214790'),
+('Tamayo 2', 'Calle San Pedro', 'Arequipa', '108', '958214791'),
+('UCSM 2', 'Calle San Pablo', 'Arequipa', '109', '958214792'),
+('UCSP 2', 'Calle San Mateo', 'Arequipa', '110', '958214793'),
+('UNSA 2', 'Calle San Nicolás', 'Arequipa', '111', '958214794');
+
+
+INSERT INTO tblProveedor (ruc, razonsocial, correo) VALUES
+('20547639011', 'Proveedor1', 'proveedor1@mail.com'),
+('20547639012', 'Proveedor2', 'proveedor2@mail.com'),
+('20547639013', 'Proveedor3', 'proveedor3@mail.com'),
+('20547639014', 'Proveedor4', 'proveedor4@mail.com'),
+('20547639015', 'Proveedor5', 'proveedor5@mail.com'),
+('20547639016', 'Proveedor6', 'proveedor6@mail.com'),
+('20547639017', 'Proveedor7', 'proveedor7@mail.com'),
+('20547639018', 'Proveedor8', 'proveedor8@mail.com'),
+('20547639019', 'Proveedor9', 'proveedor9@mail.com'),
+('20547639020', 'Proveedor10', 'proveedor10@mail.com');
+
+INSERT INTO tblPedido (correo, telefono, nombre, codigoadministrador, razonsocialsede) VALUES
+('pedido1@mail.com', '951847362', 'Pedido Luis', 1, 'Guillén'),
+('pedido2@mail.com', '951847363', 'Pedido Diego', 2, 'Tamayo'),
+('pedido3@mail.com', '951847364', 'Pedido Julio', 3, 'UCSM'),
+('pedido4@mail.com', '951847365', 'Pedido Giaccomo', 4, 'UCSP'),
+('pedido5@mail.com', '951847366', 'Pedido Tito', 5, 'UNSA'),
+('pedido6@mail.com', '951847367', 'Pedido Chimoltrufia', 6, 'Guillén 2'),
+('pedido7@mail.com', '951847368', 'Pedido Pancracia', 7, 'Tamayo 2'),
+('pedido8@mail.com', '951847369', 'Pedido Luis 2', 8, 'UCSM 2'),
+('pedido9@mail.com', '951847370', 'Pedido Diego 2', 9, 'UCSP 2'),
+('pedido10@mail.com', '951847371', 'Pedido Julio 2', 10, 'UNSA 2'),
+('pedido11@mail.com', '951847372', 'Pedido Giaccomo 2', 1, 'Guillén'),
+('pedido12@mail.com', '951847373', 'Pedido Tito 2', 2, 'Tamayo'),
+('pedido13@mail.com', '951847374', 'Pedido Chimoltrufia 2', 3, 'UCSM'),
+('pedido14@mail.com', '951847375', 'Pedido Pancracia 2', 4, 'UCSP'),
+('pedido15@mail.com', '951847376', 'Pedido Luis 3', 5, 'UNSA'),
+('pedido16@mail.com', '951847377', 'Pedido Diego 3', 6, 'Guillén 2'),
+('pedido17@mail.com', '951847378', 'Pedido Julio 3', 7, 'Tamayo 2'),
+('pedido18@mail.com', '951847379', 'Pedido Giaccomo 3', 8, 'UCSM 2'),
+('pedido19@mail.com', '951847380', 'Pedido Tito 3', 9, 'UCSP 2'),
+('pedido20@mail.com', '951847381', 'Pedido Chimoltrufia 3', 10, 'UNSA 2');
+
+
+INSERT INTO tblDetalle (marca, tipo, cantidad, codigopedido) VALUES
+('Marca A', 'Hombre', 10, 41),
+('Marca B', 'Mujer', 15, 42),
+('Marca C', 'Nino', 5, 43),
+('Marca D', 'Nina', 20, 44),
+('Marca E', 'Nino', 25, 45),
+('Marca F', 'Nino', 30, 46),
+('Marca G', 'Nino', 35, 47),
+('Marca H', 'Hombre', 40, 48),
+('Marca I', 'Hombre', 45, 49),
+('Marca J', 'Hombre', 50, 50),
+('Marca K', 'Hombre', 55, 51),
+('Marca L', 'Mujer', 60, 52),
+('Marca M', 'Mujer', 65, 53),
+('Marca N', 'Mujer', 70, 54),
+('Marca O', 'Mujer', 75, 55),
+('Marca P', 'Nina', 80, 56),
+('Marca Q', 'Nina', 85, 57),
+('Marca R', 'Nina', 90, 58),
+('Marca S', 'Hombre', 95, 59),
+('Marca T', 'Hombre', 100, 60);
+
+INSERT INTO tblRecibe (rucproveedor, codigopedido) VALUES
+('20547639011', 41),
+('20547639012', 42),
+('20547639013', 43),
+('20547639014', 44),
+('20547639015', 45),
+('20547639016', 46),
+('20547639017', 47),
+('20547639018', 48),
+('20547639019', 49),
+('20547639020', 50),
+('20547639011', 51),
+('20547639012', 52),
+('20547639013', 53),
+('20547639014', 54),
+('20547639015', 55),
+('20547639016', 56),
+('20547639017', 57),
+('20547639018', 58),
+('20547639019', 59),
+('20547639020', 60);
+
+
+
+INSERT INTO tblTelefono (telefono) VALUES
+('951847382'),
+('951847383'),
+('951847384'),
+('951847385'),
+('951847386'),
+('951847387'),
+('951847388'),
+('951847389'),
+('951847390'),
+('951847391'),
+('951847392'),
+('951847393'),
+('951847394'),
+('951847395'),
+('951847396'),
+('951847397'),
+('951847398'),
+('951847399'),
+('951847400'),
+('951847401');
+
+INSERT INTO tblDireccion (ruc, dirección) VALUES
+('20547639011', 'Calle San José 1'),
+('20547639012', 'Calle San Lázaro 2'),
+('20547639013', 'Calle San Francisco 3'),
+('20547639014', 'Calle San Martín 4'),
+('20547639015', 'Calle San Juan 5'),
+('20547639016', 'Calle San Luis 6'),
+('20547639017', 'Calle San Pedro 7'),
+('20547639018', 'Calle San Pablo 8'),
+('20547639019', 'Calle San Mateo 9'),
+('20547639020', 'Calle San Nicolás 10');
+
+
+INSERT INTO tblProveedorDetalle (telefono, direccion, ruc) VALUES
+('951847382', 'Calle San José 1', '20547639011'),
+('951847383', 'Calle San Lázaro 2', '20547639012'),
+('951847384', 'Calle San Francisco 3', '20547639013'),
+('951847385', 'Calle San Martín 4', '20547639014'),
+('951847386', 'Calle San Juan 5', '20547639015'),
+('951847387', 'Calle San Luis 6', '20547639016'),
+('951847388', 'Calle San Pedro 7', '20547639017'),
+('951847389', 'Calle San Pablo 8', '20547639018'),
+('951847390', 'Calle San Mateo 9', '20547639019'),
+('951847391', 'Calle San Nicolás 10', '20547639020'),
+('951847392', 'Calle San Miguel 11', '20547639011'),
+('951847393', 'Calle San Lucas 12', '20547639012'),
+('951847394', 'Calle San Marcos 13', '20547639013'),
+('951847395', 'Calle San Mateo 14', '20547639014'),
+('951847396', 'Calle San Andrés 15', '20547639015'),
+('951847397', 'Calle San Antonio 16', '20547639016'),
+('951847398', 'Calle San Agustín 17', '20547639017'),
+('951847399', 'Calle San Ambrosio 18', '20547639018'),
+('951847400', 'Calle San Bartolomé 19', '20547639019'),
+('951847401', 'Calle San Bernardo 20', '20547639020');
+
+INSERT INTO tblSedeDetalle (razonsocial, departamento, codigojefetienda) VALUES
+('Guillén', 'Marketing', 1),
+('Tamayo', 'Ventas', 2),
+('UCSM', 'RRHH', 3),
+('UCSP', 'Finanzas', 4),
+('UNSA', 'Finanzas', 5),
+('Guillén 2', 'Marketing', 6),
+('Tamayo 2', 'Ventas', 7),
+('UCSM 2', 'RRHH', 8),
+('UCSP 2', 'Finanzas', 9),
+('UNSA 2', 'IT', 10),
+('Guillén', 'IT', 1),
+('Tamayo', 'Marketing', 2),
+('UCSM', 'IT', 3),
+('UCSP', 'Marketing', 4),
+('UNSA', 'IT', 5),
+('Guillén 2', 'IT', 6),
+('Tamayo 2', 'Marketing', 7),
+('UCSM 2', 'Ventas', 8),
+('UCSP 2', 'RRHH', 9),
+('UNSA 2', 'Marketing', 10);
+
+--Reportes--
+
+CREATE OR REPLACE PROCEDURE report_orders_administrators_sedes(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT p.codigopedido,
+          p.nombre AS nombre_pedido,
+          a.nombre AS nombre_administrador,
+          s.razonsocial AS nombre_sede
+   FROM tblPedido p
+   JOIN tblAdministrador a ON p.codigoadministrador = a.codigoadministrador
+   JOIN tblSede s ON p.razonsocialsede = s.razonsocial;
+END;
+$$;
+
+
+CREATE OR REPLACE PROCEDURE report_order_details(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT d.codigodetalle,
+          d.marca,
+          d.tipo,
+          d.cantidad,
+          p.codigopedido,
+          p.nombre AS nombre_pedido
+   FROM tblDetalle d
+   JOIN tblPedido p ON d.codigopedido = p.codigopedido;
+END;
+$$;
+
+
+CREATE OR REPLACE PROCEDURE report_providers_orders(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT pr.ruc,
+          pr.razonsocial AS proveedor_razonsocial,
+          p.codigopedido,
+          p.nombre AS nombre_pedido
+   FROM tblProveedor pr
+   JOIN tblRecibe r ON pr.ruc = r.rucproveedor
+   JOIN tblPedido p ON r.codigopedido = p.codigopedido;
+END;
+$$;
+
+
+
+CREATE OR REPLACE PROCEDURE report_administrators_employees(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT a.codigoadministrador,
+          a.nombre AS nombre_administrador,
+          j.codigoempleado,
+          j.nombre AS nombre_empleado
+   FROM tblAdministrador a
+   JOIN tblJefeTienda j ON a.codigoadministrador = j.codigoadministrador;
+END;
+$$;
+
+
+
+CREATE OR REPLACE PROCEDURE report_sedes_jefes_departments(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT s.razonsocial,
+          s.calle,
+          s.ciudad,
+          sd.departamento,
+          j.nombre AS nombre_jefe
+   FROM tblSede s
+   JOIN tblSedeDetalle sd ON s.razonsocial = sd.razonsocial
+   JOIN tblJefeTienda j ON sd.codigojefetienda = j.codigoempleado;
+END;
+$$;
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE report_providers_addresses(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT p.ruc,
+          p.razonsocial,
+          d.direccion
+   FROM tblProveedor p
+   JOIN tblDireccion d ON p.ruc = d.ruc;
+END;
+$$;
+
+
+CREATE OR REPLACE PROCEDURE report_orders_providers(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT p.codigopedido,
+          p.nombre AS nombre_pedido,
+          pr.ruc,
+          pr.razonsocial AS proveedor_razonsocial
+   FROM tblPedido p
+   JOIN tblRecibe r ON p.codigopedido = r.codigopedido
+   JOIN tblProveedor pr ON r.rucproveedor = pr.ruc;
+END;
+$$;
+
+
+
+CREATE OR REPLACE PROCEDURE report_providers_contact_details(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT p.ruc,
+          p.razonsocial,
+          pd.telefono,
+          pd.direccion
+   FROM tblProveedor p
+   JOIN tblProveedorDetalle pd ON p.ruc = pd.ruc;
+END;
+$$;
+
+
+CREATE OR REPLACE PROCEDURE report_orders_phone_numbers(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT p.codigopedido,
+          p.nombre AS nombre_pedido,
+          t.telefono
+   FROM tblPedido p
+   JOIN tblTelefono t ON p.codigopedido = t.codigopedido;
+END;
+$$;
+
+
+CREATE OR REPLACE PROCEDURE report_products_orders_administrators(INOUT refcursor_name REFCURSOR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   OPEN refcursor_name FOR
+   SELECT d.codigodetalle,
+          d.marca,
+          d.tipo,
+          d.cantidad,
+          p.codigopedido,
+          p.nombre AS nombre_pedido,
+          a.codigoadministrador,
+          a.nombre AS nombre_administrador
+   FROM tblDetalle d
+   JOIN tblPedido p ON d.codigopedido = p.codigopedido
+   JOIN tblAdministrador a ON p.codigoadministrador = a.codigoadministrador;
+END;
+$$;
+

@@ -1,0 +1,184 @@
+/* Contenedor principal del formulario y tabla */
+.form-and-table-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw; /* Ocupa todo el ancho de la pantalla */
+  height: 100vh; /* Ocupa todo el alto de la pantalla */
+  box-sizing: border-box;
+}
+
+/* Formulario */
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrar verticalmente */
+  align-items: center; /* Centrar horizontalmente */
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.form-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%; /* Ajusta al ancho del contenedor */
+  max-width: 400px; /* Tamaño máximo para el formulario */
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-group .btn-insert {
+  background-color: #4caf50;
+  color: white;
+}
+
+.button-group .btn-update {
+  background-color: #2196f3;
+  color: white;
+}
+
+.button-group .btn-delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.button-group button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Tabla */
+.table-container {
+  flex: 1;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.table-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-container th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.table-container tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.table-container td:first-child {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Scrollbars */
+.table-container::-webkit-scrollbar,
+.form-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-container::-webkit-scrollbar-track,
+.form-container::-webkit-scrollbar-track {
+  background: #f4f4f4;
+}
+
+.table-container::-webkit-scrollbar-thumb,
+.form-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover,
+.form-container::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Añadido para los formularios con dos contenedores */
+.form-group-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.form-card {
+  flex: 1;
+  margin: 0 10px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
